@@ -5,23 +5,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>API Documentation</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.4.2/swagger-ui.css">
+    <style>
+        body { margin: 20px; font-family: Arial, sans-serif; }
+        #swagger-ui { margin-top: 20px; }
+        #fileSelector { padding: 8px; font-size: 16px; margin-bottom: 10px; }
+    </style>
 </head>
 <body>
+    <h2>Select API Documentation:</h2>
+    <select id="fileSelector">
+        <option value="https://raw.githubusercontent.com/TechWriterP/SwaggerAPI/main/swagger.yaml">Swagger API</option>
+        <option value="https://raw.githubusercontent.com/TechWriterP/SwaggerAPI/main/petstore.yaml">Petstore API</option>
+    </select>
+
     <div id="swagger-ui"></div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.4.2/swagger-ui-bundle.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.4.2/swagger-ui-standalone-preset.js"></script>
     <script>
-        window.onload = function() {
+        function loadSwaggerUI(url) {
             const ui = SwaggerUIBundle({
-                url: "swagger.yaml", // This will be updated in the next step
+                url: url,
                 dom_id: "#swagger-ui",
+                deepLinking: true,
                 presets: [
                     SwaggerUIBundle.presets.apis,
                     SwaggerUIStandalonePreset
                 ],
                 layout: "StandaloneLayout"
             });
-        };
+        }
+
+        // Load default API doc (swagger.yaml)
+        const fileSelector = document.getElementById("fileSelector");
+        loadSwaggerUI(fileSelector.value);
+
+        // Change API doc when user selects a different file
+        fileSelector.addEventListener("change", function() {
+            loadSwaggerUI(this.value);
+        });
     </script>
 </body>
 </html>
